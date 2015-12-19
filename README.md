@@ -1,6 +1,6 @@
 # cocoapods-bugsnag
 
-A [Cocoapods](https://cocoapods.org) plugin for integrating Cocoa projects with
+A [CocoaPods](https://cocoapods.org) plugin for integrating Cocoa projects with
 [Bugsnag](https://bugsnag.com), an error tracking and resolution tool.
 
 ## Installation
@@ -21,7 +21,7 @@ install, run:
 ## Usage
 
 The [Bugsnag reporting library for Cocoa](https://github.com/bugsnag/bugsnag-cocoa)
-is available via Cocoapods. Once you have added Bugsnag to your Podfile, running
+is available via CocoaPods. Once you have added Bugsnag to your Podfile, running
 `pod install` will add a build phase to your project workspace to upload your
 [dSYM](http://noverse.com/blog/2010/03/how-to-deal-with-an-iphone-crash-report/)
 files so the Bugsnag service can provide you with symbolicated stack traces.
