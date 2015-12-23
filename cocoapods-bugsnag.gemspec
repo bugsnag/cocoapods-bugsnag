@@ -6,11 +6,17 @@ Gem::Specification.new do |spec|
   spec.summary = "To get meaningful stacktraces from your crashes, the Bugsnag service needs your dSYM file for your build. This plugin adds an upload phase to your project where needed."
   spec.authors = [ "Delisa Mason" ]
   spec.email = [ "delisa@bugsnag.com" ]
-  spec.files = [ "lib/cocoapods_bugsnag.rb", "lib/cocoapods_plugin.rb" ]
+  spec.files = [
+    "lib/cocoapods_bugsnag.rb",
+    "lib/cocoapods_plugin.rb",
+    "cocoapods-bugsnag.gemspec"
+  ]
+  spec.extra_rdoc_files = [ "README.md", "CHANGELOG.md" ]
   spec.test_files = [ "spec/cocoapods_bugsnag_spec.rb" ]
   spec.require_paths = [ "lib" ]
   spec.license = "MIT"
 
+  spec.add_dependency "cocoapods", "~> 0.39.0"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "bacon"
 end
