@@ -1,3 +1,8 @@
+2.0.0 (30 Jun 2016)
+=====
+
+Version update to support CocoaPods 1.0
+
 1.0.1 (23 Dec 2015)
 =====
 
