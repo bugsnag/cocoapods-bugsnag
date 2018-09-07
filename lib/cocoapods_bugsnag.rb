@@ -3,6 +3,13 @@ module Pod
 
     BUGSNAG_PHASE_NAME = "Upload Bugsnag dSYM"
     BUGSNAG_PHASE_SCRIPT = <<'RUBY'
+api_key = ENV["BUGSNAG_API_KEY"]
+if !api_key
+  default_info_plist_location = Dir.glob("./{ios/,}*/Info.plist").reject {|path| path =~ /build|test/i }
+  plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :BugsnagAPIKey" "#{default_info_plist_location.first}"`
+  api_key = plist_buddy_response if $?.success?
+end
+
 fork do
   Process.setsid
   STDIN.reopen("/dev/null")
@@ -12,7 +19,7 @@ fork do
   require 'shellwords'
 
   Dir["#{ENV["DWARF_DSYM_FOLDER_PATH"]}/*/Contents/Resources/DWARF/*"].each do |dsym|
-    system("curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV["PROJECT_DIR"])} https://upload.bugsnag.com/")
+    system("curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV["PROJECT_DIR"])} -F apiKey=#{Shellwords.escape(api_key)} https://upload.bugsnag.com/")
   end
 end
 RUBY
