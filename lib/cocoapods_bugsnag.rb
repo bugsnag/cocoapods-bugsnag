@@ -19,7 +19,10 @@ fork do
   require 'shellwords'
 
   Dir["#{ENV["DWARF_DSYM_FOLDER_PATH"]}/*/Contents/Resources/DWARF/*"].each do |dsym|
-    system("curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV["PROJECT_DIR"])} -F apiKey=#{Shellwords.escape(api_key)} https://upload.bugsnag.com/")
+    curl_command = "curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV["PROJECT_DIR"])} "
+    curl_command += "-F apiKey=#{Shellwords.escape(api_key)} " if api_key
+    curl_command += "https://upload.bugsnag.com/"
+    system(curl_command)
   end
 end
 RUBY
