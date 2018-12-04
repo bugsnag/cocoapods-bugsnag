@@ -1,4 +1,4 @@
-TBD
+2.0.1 (04 Dec 2018)
 =====
 
 Added API key to generated upload command
