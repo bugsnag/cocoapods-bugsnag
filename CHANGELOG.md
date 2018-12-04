@@ -1,3 +1,8 @@
+TBD
+=====
+
+Added API key to generated upload command
+
 2.0.0 (30 Jun 2016)
 =====
 
