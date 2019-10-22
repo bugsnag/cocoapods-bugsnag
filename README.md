@@ -20,11 +20,14 @@ install, run:
 
 ## Usage
 
-The [Bugsnag reporting library for Cocoa](https://github.com/bugsnag/bugsnag-cocoa)
-is available via CocoaPods. Once you have added Bugsnag to your Podfile, running
-`pod install` will add a build phase to your project workspace to upload your
-[dSYM](http://noverse.com/blog/2010/03/how-to-deal-with-an-iphone-crash-report/)
-files so the Bugsnag service can provide you with symbolicated stack traces.
+1. Add `pod 'Bugsnag'` to your Podfile
+2. Run `pod install`. This will add a Run Script build phase to your project
+   workspace to upload your
+   [dSYM](http://noverse.com/blog/2010/03/how-to-deal-with-an-iphone-crash-report/)
+   files so the Bugsnag service can provide you with symbolicated stack traces.
+3. Insert your API key in the new "Upload Bugsnag dSYM" run script build phase
+   in your project
+
 
 ## Support
 

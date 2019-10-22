@@ -3,15 +3,21 @@ module Pod
 
     BUGSNAG_PHASE_NAME = "Upload Bugsnag dSYM"
     BUGSNAG_PHASE_SCRIPT = <<'RUBY'
-# First, attempt to get the API key from an environment variable
-api_key = ENV["BUGSNAG_API_KEY"]
+api_key = nil # Insert your key here!
 
-# If not present, attempt to lookup the value from the Info.plist
-if !api_key
-  default_info_plist_location = Dir.glob("./{ios/,}*/Info.plist").reject {|path| path =~ /build|test/i }
-  plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :BugsnagAPIKey" "#{default_info_plist_location.first}"`
-  api_key = plist_buddy_response if $?.success?
+# Attempt to get the API key from an environment variable
+unless api_key
+  api_key = ENV["BUGSNAG_API_KEY"]
+
+  # If not present, attempt to lookup the value from the Info.plist
+  unless api_key
+    default_info_plist_location = Dir.glob("./{ios/,}*/Info.plist").reject {|path| path =~ /build|test/i }
+    plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :BugsnagAPIKey" "#{default_info_plist_location.first}"`
+    api_key = plist_buddy_response if $?.success?
+  end
 end
+
+fail("No Bugsnag API key detected - add your key to this Run Script phase") unless api_key
 
 fork do
   Process.setsid
