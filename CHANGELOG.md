@@ -1,3 +1,9 @@
+TBD
+====
+
+Added new location for API key in `Info.plist` from
+[bugsnag-cocoa v6.x](https://github.com/bugsnag/bugsnag-cocoa/releases/tag/v6.0.0).
+
 2.0.1 (04 Dec 2018)
 =====
 

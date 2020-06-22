@@ -12,7 +12,8 @@ unless api_key
   # If not present, attempt to lookup the value from the Info.plist
   unless api_key
     default_info_plist_location = Dir.glob("./{ios/,}*/Info.plist").reject {|path| path =~ /build|test/i }
-    plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :BugsnagAPIKey" "#{default_info_plist_location.first}"`
+    plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :bugsnag:apiKey" "#{default_info_plist_location.first}"`
+    plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :BugsnagAPIKey" "#{default_info_plist_location.first}"` if !$?.success?
     api_key = plist_buddy_response if $?.success?
   end
 end
