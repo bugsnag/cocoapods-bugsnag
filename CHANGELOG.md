@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.0 (TBD)
+## 2.1.0 (25 Jun 2020)
 
 ### Enhancements
 
