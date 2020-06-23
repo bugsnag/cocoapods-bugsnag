@@ -4,6 +4,13 @@ TBD
 Added new location for API key in `Info.plist` from
 [bugsnag-cocoa v6.x](https://github.com/bugsnag/bugsnag-cocoa/releases/tag/v6.0.0).
 
+Amended filter on `Info.plist` search so that it only removes files inside
+`/build/` or `/test/` directories rather than directories with the string
+"build" or "test" in them.
+
+Add the --http1.1 option to the curl command to force use of HTTP/1.1 to
+prevent the uploads of larger files from failing.
+
 2.0.1 (04 Dec 2018)
 =====
 
