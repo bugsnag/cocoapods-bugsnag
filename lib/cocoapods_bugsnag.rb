@@ -11,9 +11,9 @@ unless api_key
 
   # If not present, attempt to lookup the value from the Info.plist
   unless api_key
-default_info_plist_location = Dir.glob("./{ios/,}*/Info.plist").reject {|path| path =~ /\/(build|test)\//i }
-    plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :bugsnag:apiKey" "#{default_info_plist_location.first}"`
-    plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :BugsnagAPIKey" "#{default_info_plist_location.first}"` if !$?.success?
+    info_plist_path = Dir.glob("./{ios/,}*/Info.plist").reject {|path| path =~ /\/(build|test)\//i }.first
+    plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :bugsnag:apiKey" "#{info_plist_path}"`
+    plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :BugsnagAPIKey" "#{info_plist_path}"` if !$?.success?
     api_key = plist_buddy_response if $?.success?
   end
 end
@@ -30,7 +30,7 @@ fork do
 
   Dir["#{ENV["DWARF_DSYM_FOLDER_PATH"]}/*/Contents/Resources/DWARF/*"].each do |dsym|
     curl_command = "curl --http1.1 -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV["PROJECT_DIR"])} "
-    curl_command += "-F apiKey=#{Shellwords.escape(api_key)} " if api_key
+    curl_command += "-F apiKey=#{Shellwords.escape(api_key)} "
     curl_command += "https://upload.bugsnag.com/"
     system(curl_command)
   end
