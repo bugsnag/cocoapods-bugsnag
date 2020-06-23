@@ -1,3 +1,9 @@
+TBD
+====
+
+Add the --http1.1 option to the curl command to force use of HTTP/1.1 to
+prevent the uploads of larger files from failing.
+
 2.0.1 (04 Dec 2018)
 =====
 
