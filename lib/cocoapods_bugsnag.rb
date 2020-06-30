@@ -3,7 +3,7 @@ module Pod
 
     BUGSNAG_PHASE_NAME = "Upload Bugsnag dSYM"
     BUGSNAG_PHASE_SCRIPT = <<'RUBY'
-api_key = nil # Insert your key here!
+api_key = nil # Insert your key here to use it directly from this script
 
 # Attempt to get the API key from an environment variable
 unless api_key
@@ -18,7 +18,7 @@ unless api_key
   end
 end
 
-fail("No Bugsnag API key detected - add your key to this Run Script phase") unless api_key
+fail("No Bugsnag API key detected - add your key to your Info.plist, BUGSNAG_API_KEY environment variable or this Run Script phase") unless api_key
 
 fork do
   Process.setsid
