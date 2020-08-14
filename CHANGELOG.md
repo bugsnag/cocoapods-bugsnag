@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.0 (25 Jun 2020)
+## 2.1.0 (TBD)
 
 ### Enhancements
 
@@ -11,8 +11,6 @@
 
 * Add the --http1.1 option to the curl command to force use of HTTP/1.1 to prevent the uploads of larger files from failing.
   | [#8](https://github.com/bugsnag/cocoapods-bugsnag/pull/8)
-* Amended filter on `Info.plist` search so that it only removes files inside `/build/` or `/test/` directories rather than directories with the string "build" or "test" in them.
-  | [#10](https://github.com/bugsnag/cocoapods-bugsnag/pull/10)
 
 ## 2.0.1 (04 Dec 2018)
 
