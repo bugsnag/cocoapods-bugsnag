@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.2.0 (30 Sept 2020)
+
+### Enhancements
+
+* This plugin now finds `Info.plist` using Xcode environment variables, rather than a `glob` operation for robustness.
+  | [#15](https://github.com/bugsnag/cocoapods-bugsnag/pull/15)
+
+* This plugin will now only add itself to your Xcode project if it is explicitly added as a plugin in your `Podfile`. Previously it would install if `Bugsnag` was detected in your `Podfile`.
+  | [#16](https://github.com/bugsnag/cocoapods-bugsnag/pull/16)
+
 ## 2.1.0 (14 Aug 2020)
 
 ### Enhancements
