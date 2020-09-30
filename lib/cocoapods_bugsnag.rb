@@ -40,7 +40,7 @@ RUBY
     alias_method :integrate_without_bugsnag!, :integrate!
     def integrate!
       integrate_without_bugsnag!
-      return unless has_bugsnag_dependency?
+      return unless should_add_build_phase?
       return if bugsnag_native_targets.empty?
       UI.section("Integrating with Bugsnag") do
         add_bugsnag_upload_script_phase
@@ -62,10 +62,14 @@ RUBY
       end
     end
 
-    def has_bugsnag_dependency?
-      target.target_definition.dependencies.detect do |dep|
+    def should_add_build_phase?
+      has_bugsnag_dep = target.target_definition.dependencies.any? do |dep|
         dep.name.include?('Bugsnag')
-      end != nil
+      end
+
+      uses_bugsnag_plugin = target.target_definition.podfile.plugins.key?('cocoapods-bugsnag')
+
+      return has_bugsnag_dep && uses_bugsnag_plugin
     end
 
     def bugsnag_native_targets
