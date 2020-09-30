@@ -24,14 +24,23 @@ install, run:
 
 ## Usage
 
-To add the build phase to your project, add pod ‘Bugsnag’ to your Podfile and run:
+To add the build phase to your project, add `pod 'Bugsnag'`, and `plugin 'cocoapods-bugsnag'` to your `Podfile`:
+
+```ruby
+pod 'Bugsnag'
+plugin 'cocoapods-bugsnag'
+```
+
+Then, install with: 
 
 ```bash
 pod install
 ```
 
+Once added, uploading your dSYM files to Bugsnag will occur automatically.
+
 By default, your Bugsnag API key will either be read from the `BUGSNAG_API_KEY`
-environment variable or from the `:bugsnag:apiKey` (or `BugsnagAPIKey`) value in your
+environment variable or from the `bugsnag.apiKey` (or `BugsnagAPIKey`) value in your
 `Info.plist`. Alternatively edit the script in the new "Upload Bugsnag dSYM" build 
 phase in Xcode.
 
