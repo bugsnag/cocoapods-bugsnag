@@ -66,9 +66,7 @@ RUBY
       has_bugsnag_dep = target.target_definition.dependencies.any? do |dep|
         dep.name.include?('Bugsnag')
       end
-
       uses_bugsnag_plugin = target.target_definition.podfile.plugins.key?('cocoapods-bugsnag')
-
       return has_bugsnag_dep && uses_bugsnag_plugin
     end
 
