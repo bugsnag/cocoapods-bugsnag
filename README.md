@@ -40,7 +40,7 @@ pod install
 Once added, uploading your dSYM files to Bugsnag will occur automatically.
 
 By default, your Bugsnag API key will either be read from the `BUGSNAG_API_KEY`
-environment variable or from the `bugsnag.apiKey` (or `BugsnagAPIKey`) value in your
+environment variable or from the `:bugsnag:apiKey` (or `BugsnagAPIKey`) value in your
 `Info.plist`. Alternatively edit the script in the new "Upload Bugsnag dSYM" build 
 phase in Xcode.
 
