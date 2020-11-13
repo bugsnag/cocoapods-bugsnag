@@ -50,3 +50,7 @@ phase in Xcode.
 * [Search open and closed issues](https://github.com/bugsnag/cocoapods-bugsnag/issues?utf8=✓&q=is%3Aissue)
   for similar problems
 * [Open an issue](https://github.com/bugsnag/cocoapods-bugsnag/issues/new)
+
+## License
+
+This module is free software released under the MIT License. See [LICENSE.txt](./LICENSE.txt) for details.
