@@ -56,6 +56,9 @@ RUBY
           bp.name == BUGSNAG_PHASE_NAME
         end.first || native_target.new_shell_script_build_phase(BUGSNAG_PHASE_NAME)
 
+        phase.input_paths = [
+          "${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}",
+          "${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}"]
         phase.shell_path = "/usr/bin/env ruby"
         phase.shell_script = BUGSNAG_PHASE_SCRIPT
         phase.show_env_vars_in_log = '0'
