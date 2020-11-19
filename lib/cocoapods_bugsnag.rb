@@ -2,6 +2,10 @@ module Pod
   class Installer::UserProjectIntegrator::TargetIntegrator
 
     BUGSNAG_PHASE_NAME = "Upload Bugsnag dSYM"
+    BUGSNAG_PHASE_INPUT_PATHS = [
+      "${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}",
+      "${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}"]
+    BUGSNAG_PHASE_SHELL_PATH = "/usr/bin/env ruby"
     BUGSNAG_PHASE_SCRIPT = <<'RUBY'
 api_key = nil # Insert your key here to use it directly from this script
 
@@ -56,10 +60,8 @@ RUBY
           bp.name == BUGSNAG_PHASE_NAME
         end.first || native_target.new_shell_script_build_phase(BUGSNAG_PHASE_NAME)
 
-        phase.input_paths = [
-          "${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}",
-          "${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}"]
-        phase.shell_path = "/usr/bin/env ruby"
+        phase.input_paths = BUGSNAG_PHASE_INPUT_PATHS
+        phase.shell_path = BUGSNAG_PHASE_SHELL_PATH
         phase.shell_script = BUGSNAG_PHASE_SCRIPT
         phase.show_env_vars_in_log = '0'
       end
@@ -77,7 +79,7 @@ RUBY
       @bugsnag_native_targets ||=(
         native_targets.reject do |native_target|
           native_target.shell_script_build_phases.any? do |bp|
-            bp.name == BUGSNAG_PHASE_NAME && bp.shell_script == BUGSNAG_PHASE_SCRIPT
+            bp.name == BUGSNAG_PHASE_NAME && bp.input_paths == BUGSNAG_PHASE_INPUT_PATHS && bp.shell_path == BUGSNAG_PHASE_SHELL_PATH && bp.shell_script == BUGSNAG_PHASE_SCRIPT
           end
         end
       )
