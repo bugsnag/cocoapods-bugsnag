@@ -1,5 +1,12 @@
 # Changelog
 
+## TBD
+
+### Bug fixes
+
+* The Xcode build phase now specifies its dependencies for improved reliability with Xcode's new build system.
+  | [#20](https://github.com/bugsnag/cocoapods-bugsnag/pull/20)
+
 ## 2.2.0 (30 Sept 2020)
 
 ### Enhancements
