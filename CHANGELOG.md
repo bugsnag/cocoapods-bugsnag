@@ -1,6 +1,6 @@
 # Changelog
 
-## TBD
+## 2.2.1 (20 Nov 2020)
 
 ### Bug fixes
 

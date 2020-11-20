@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name = "cocoapods-bugsnag"
-  spec.version = "2.2.0"
+  spec.version = "2.2.1"
   spec.homepage = "https://bugsnag.com"
   spec.description = "Configures the dSYM upload phase of your project when integrated with bugsnag."
   spec.summary = "To get meaningful stacktraces from your crashes, the Bugsnag service needs your dSYM file for your build. This plugin adds an upload phase to your project where needed."
