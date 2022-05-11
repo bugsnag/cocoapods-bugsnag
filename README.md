@@ -44,6 +44,9 @@ environment variable or from the `:bugsnag:apiKey` (or `BugsnagAPIKey`) value in
 `Info.plist`. Alternatively edit the script in the new "Upload Bugsnag dSYM" build 
 phase in Xcode.
 
+Uploading can be disabled by setting `DISABLE_COCOAPODS_BUGSNAG=YES` in Xcode's
+Build Settings or an `xcconfig` file, or as an argument to `xcodebuild`.
+
 ## Support
 
 * [Symbolication guide](https://docs.bugsnag.com/platforms/ios/symbolication-guide/)
