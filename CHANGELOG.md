@@ -1,5 +1,12 @@
 # Changelog
 
+## TBD
+
+### Enhancements
+
+* Uploading can now be skipped by setting `DISABLE_COCOAPODS_BUGSNAG=YES` via Xcode's Build Settings, `xcconfig` or `xcodebuild`.
+  | [#25](https://github.com/bugsnag/cocoapods-bugsnag/pull/25)
+
 ## 2.2.1 (20 Nov 2020)
 
 ### Bug fixes

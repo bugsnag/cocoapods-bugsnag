@@ -7,6 +7,12 @@ module Pod
       "${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}"]
     BUGSNAG_PHASE_SHELL_PATH = "/usr/bin/env ruby"
     BUGSNAG_PHASE_SCRIPT = <<'RUBY'
+# Set DISABLE_COCOAPODS_BUGSNAG=YES via Xcode's Build Settings, xcconfig or xcodebuild to skip upload
+if ENV['DISABLE_COCOAPODS_BUGSNAG'] == 'YES'
+  p 'Skipping dSYM upload'
+  return
+end
+
 api_key = nil # Insert your key here to use it directly from this script
 
 # Attempt to get the API key from an environment variable
