@@ -1,6 +1,6 @@
 # Changelog
 
-## TBD
+## 2.2.2 (17 May 2022)
 
 ### Enhancements
 
