@@ -13,19 +13,15 @@ if ENV['DISABLE_COCOAPODS_BUGSNAG'] == 'YES'
   return
 end
 
-api_key = nil # Insert your key here to use it directly from this script
+# Attempt to get the API key from an environment variable (or Xcode build setting)
+api_key = ENV["BUGSNAG_API_KEY"]
 
-# Attempt to get the API key from an environment variable
+# If not present, attempt to lookup the value from the Info.plist
 unless api_key
-  api_key = ENV["BUGSNAG_API_KEY"]
-
-  # If not present, attempt to lookup the value from the Info.plist
-  unless api_key
-    info_plist_path = "#{ENV["BUILT_PRODUCTS_DIR"]}/#{ENV["INFOPLIST_PATH"]}"
-    plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :bugsnag:apiKey" "#{info_plist_path}"`
-    plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :BugsnagAPIKey" "#{info_plist_path}"` if !$?.success?
-    api_key = plist_buddy_response if $?.success?
-  end
+  info_plist_path = "#{ENV["BUILT_PRODUCTS_DIR"]}/#{ENV["INFOPLIST_PATH"]}"
+  plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :bugsnag:apiKey" "#{info_plist_path}"`
+  plist_buddy_response = `/usr/libexec/PlistBuddy -c "print :BugsnagAPIKey" "#{info_plist_path}"` if !$?.success?
+  api_key = plist_buddy_response if $?.success?
 end
 
 fail("No Bugsnag API key detected - add your key to your Info.plist, BUGSNAG_API_KEY environment variable or this Run Script phase") unless api_key
@@ -75,7 +71,7 @@ RUBY
 
     def should_add_build_phase?
       has_bugsnag_dep = target.target_definition.dependencies.any? do |dep|
-        dep.name.include?('Bugsnag')
+        dep.name.match?(/bugsnag/i)
       end
       uses_bugsnag_plugin = target.target_definition.podfile.plugins.key?('cocoapods-bugsnag')
       return has_bugsnag_dep && uses_bugsnag_plugin
