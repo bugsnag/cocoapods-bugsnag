@@ -1,5 +1,13 @@
 # Changelog
 
+## TBD
+
+### Enhancements
+
+* The Xcode build phase is now compatible with Xcode 14's `ENABLE_USER_SCRIPT_SANDBOXING` build setting.
+  This requires all dSYM files to be specified in the build phase's "Input Files" list.
+  | [#28](https://github.com/bugsnag/cocoapods-bugsnag/pull/28)
+
 ## 2.2.2 (17 May 2022)
 
 ### Enhancements
