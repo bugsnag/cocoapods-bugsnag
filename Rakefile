@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
+task default: %i[spec]
 
 task :spec do
-  sh 'bundle exec bacon spec/*_spec.rb'
+  sh 'bundle exec rspec'
 end
