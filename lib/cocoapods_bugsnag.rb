@@ -9,7 +9,7 @@ module Pod
     BUGSNAG_PHASE_SCRIPT = <<'RUBY'
 # Set DISABLE_COCOAPODS_BUGSNAG=YES via Xcode's Build Settings, xcconfig or xcodebuild to skip upload
 if ENV['DISABLE_COCOAPODS_BUGSNAG'] == 'YES'
-  p 'Skipping dSYM upload'
+  puts 'Skipping dSYM upload'
   return
 end
 
@@ -24,22 +24,33 @@ unless api_key
   api_key = plist_buddy_response if $?.success?
 end
 
-fail("No Bugsnag API key detected - add your key to your Info.plist, BUGSNAG_API_KEY environment variable or this Run Script phase") unless api_key
+fail("No Bugsnag API key detected - add your key to your Info.plist or BUGSNAG_API_KEY environment variable") unless api_key
 
-fork do
-  Process.setsid
-  STDIN.reopen("/dev/null")
-  STDOUT.reopen("/dev/null", "a")
-  STDERR.reopen("/dev/null", "a")
-
-  require 'shellwords'
-
-  Dir["#{ENV["DWARF_DSYM_FOLDER_PATH"]}/*/Contents/Resources/DWARF/*"].each do |dsym|
-    curl_command = "curl --http1.1 -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV["PROJECT_DIR"])} "
-    curl_command += "-F apiKey=#{Shellwords.escape(api_key)} "
-    curl_command += "https://upload.bugsnag.com/"
-    system(curl_command)
+if ENV['ENABLE_USER_SCRIPT_SANDBOXING'] == 'YES'
+  count = ENV['SCRIPT_INPUT_FILE_COUNT'].to_i
+  abort 'error: dSYMs must be specified as build phase "Input Files" because ENABLE_USER_SCRIPT_SANDBOXING is enabled' unless count > 0
+  dsyms = []
+  for i in 0 .. count - 1
+    file = ENV["SCRIPT_INPUT_FILE_#{i}"]
+    next if file.end_with? '.plist'
+    if File.exist? file
+      dsyms.append file
+    else
+      abort "error: cannot read #{file}" unless ENV['DEBUG_INFORMATION_FORMAT'] != 'dwarf-with-dsym'
+    end
   end
+else
+  dsyms = Dir["#{ENV['DWARF_DSYM_FOLDER_PATH']}/*/Contents/Resources/DWARF/*"]
+end
+
+dsyms.each do |dsym|
+  Process.detach Process.spawn('/usr/bin/curl', '--http1.1',
+    '-F', "apiKey=#{api_key}",
+    '-F', "dsym=@#{dsym}",
+    '-F', "projectRoot=#{ENV['PROJECT_DIR']}",
+    'https://upload.bugsnag.com/',
+    %i[err out] => :close
+  )
 end
 RUBY
 
@@ -47,26 +58,33 @@ RUBY
     def integrate!
       integrate_without_bugsnag!
       return unless should_add_build_phase?
-      return if bugsnag_native_targets.empty?
+
       UI.section("Integrating with Bugsnag") do
         add_bugsnag_upload_script_phase
         user_project.save
       end
-      UI.puts "Added 'Upload Bugsnag dSYM' build phase"
     end
 
-
     def add_bugsnag_upload_script_phase
-      bugsnag_native_targets.each do |native_target|
+      native_targets.each do |native_target|
         phase = native_target.shell_script_build_phases.select do |bp|
           bp.name == BUGSNAG_PHASE_NAME
-        end.first || native_target.new_shell_script_build_phase(BUGSNAG_PHASE_NAME)
+        end.first || add_shell_script_build_phase(native_target, BUGSNAG_PHASE_NAME)
 
-        phase.input_paths = BUGSNAG_PHASE_INPUT_PATHS
+        phase.input_paths = dsym_phase_input_paths(phase)
         phase.shell_path = BUGSNAG_PHASE_SHELL_PATH
         phase.shell_script = BUGSNAG_PHASE_SCRIPT
         phase.show_env_vars_in_log = '0'
       end
+    end
+
+    def add_shell_script_build_phase(native_target, name)
+      UI.puts "Adding '#{name}' build phase to '#{native_target.name}'"
+      native_target.new_shell_script_build_phase(name)
+    end
+
+    def dsym_phase_input_paths(phase)
+      (phase.input_paths + BUGSNAG_PHASE_INPUT_PATHS + target.framework_dsym_paths).uniq
     end
 
     def should_add_build_phase?
@@ -76,15 +94,18 @@ RUBY
       uses_bugsnag_plugin = target.target_definition.podfile.plugins.key?('cocoapods-bugsnag')
       return has_bugsnag_dep && uses_bugsnag_plugin
     end
+  end
+end
 
-    def bugsnag_native_targets
-      @bugsnag_native_targets ||=(
-        native_targets.reject do |native_target|
-          native_target.shell_script_build_phases.any? do |bp|
-            bp.name == BUGSNAG_PHASE_NAME && bp.input_paths == BUGSNAG_PHASE_INPUT_PATHS && bp.shell_path == BUGSNAG_PHASE_SHELL_PATH && bp.shell_script == BUGSNAG_PHASE_SCRIPT
-          end
-        end
-      )
+module Pod
+  class AggregateTarget
+    def framework_dsym_paths
+      return [] unless includes_frameworks?
+
+      framework_paths_by_config['Release'].map do |framework|
+        name = File.basename(framework.source_path, '.framework')
+        "#{framework.source_path}.dSYM/Contents/Resources/DWARF/#{name}"
+      end
     end
   end
 end
