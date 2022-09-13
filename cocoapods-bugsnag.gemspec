@@ -18,5 +18,4 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "cocoapods", "~> 1.0"
   spec.add_development_dependency "rake", ">= 12.3.3"
-  spec.add_development_dependency "bacon", "~> 1.0"
 end
