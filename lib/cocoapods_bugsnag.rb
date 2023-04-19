@@ -49,7 +49,6 @@ dsyms.each do |dsym|
     '-F', "dsym=@#{dsym}",
     '-F', "projectRoot=#{ENV['PROJECT_DIR']}",
     'https://upload.bugsnag.com/',
-    %i[err out] => :close
   )
 end
 RUBY
