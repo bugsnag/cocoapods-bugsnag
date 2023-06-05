@@ -1,5 +1,12 @@
 # Changelog
 
+## TBD
+
+### Enhancements
+
+* The Xcode build phase now outputs dSYM upload information to the Xcode build logs.
+  | [#31](https://github.com/bugsnag/cocoapods-bugsnag/pull/31)
+
 ## 2.3.0 (13 Sept 2022)
 
 ### Enhancements
