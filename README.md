@@ -1,7 +1,7 @@
 # cocoapods-bugsnag
 
 A [CocoaPods](https://cocoapods.org) plugin for integrating Cocoa projects with
-[Bugsnag](https://bugsnag.com), an error tracking and resolution tool. When
+[BugSnag](https://bugsnag.com), an error tracking and resolution tool. When
 installed, the plugin will add a Run Script build phase to your project workspace
 to upload your
 [dSYM](http://noverse.com/blog/2010/03/how-to-deal-with-an-iphone-crash-report/)
@@ -37,9 +37,9 @@ Then, install with:
 pod install
 ```
 
-Once added, uploading your dSYM files to Bugsnag will occur automatically.
+Once added, uploading your dSYM files to BugSnag will occur automatically.
 
-By default, your Bugsnag API key will either be read from the `BUGSNAG_API_KEY`
+By default, your BugSnag API key will either be read from the `BUGSNAG_API_KEY`
 environment variable (add an Xcode build setting with this name to set it) or
 from the `:bugsnag:apiKey` (or `BugsnagAPIKey`) value in your `Info.plist`.
 
